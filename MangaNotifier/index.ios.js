@@ -5,9 +5,13 @@ import {
   Text,
   View,
   ListView,
-  Image
+  Image,
+  TouchableOpacity
 } from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
+import MangaItem from '../MangaNotifier/components/manga-item';
+
+const gradientColorCode = ['#61a1ff', '#c821ff', '#61a1ff'];
 
 export default class MangaNotifier extends Component {
   getMangaList() {
@@ -57,36 +61,29 @@ export default class MangaNotifier extends Component {
   render() {
     if (this.state.loading) {
       return (
-         <LinearGradient start={{x: 0.0, y: 0.1}} end={{x: 0.1, y: 1.0}} colors={['#61a1ff', '#c821ff', '#61a1ff']} style={styles.startup}>
+         <LinearGradient start={{x: 0.0, y: 0.1}} end={{x: 0.1, y: 1.0}} colors={gradientColorCode} style={styles.startup}>
            <View>
             <Text style={styles.app_name}>
               Manga Notifier
             </Text>
-            <Text style={{ fontSize: 16, color: "#fff", backgroundColor: "transparent", fontWeight: "300", textAlign: "center" }}>Loading . . .</Text>
+            <Text style={{ fontSize: 16, color: "#fff", backgroundColor: "transparent", fontWeight: "300", textAlign: "center" }}>
+              Loading . . .
+            </Text>
           </View>
         </LinearGradient>
       );
     } else {
       return (
-        <LinearGradient start={{x: 0.0, y: 0.15}} end={{x: 0.2, y: 1.0}} colors={['#61a1ff', '#c821ff', '#61a1ff']}>
+        <LinearGradient start={{x: 0.0, y: 0.15}} end={{x: 0.2, y: 1.0}} colors={gradientColorCode}>
           <View>
             <Text style={styles.app_header}>
               Manga Notifier
             </Text>
             <ListView
-              style={styles.lineitems_container}
+              style={styles.mangaitems_container}
               dataSource={this.state.dataSource}
               renderRow={data => (
-                <View style={styles.lineitem}>
-                  <Image
-                    style={styles.lineitem_image}
-                    source={{ uri: data.cover, cache: "force-cache" }}
-                  />
-                  <View style={styles.lineitem_data}>
-                    <Text style={styles.lineitem_title}>{data.name}</Text>
-                    <Text style={styles.lineitem_info}>{data.info}</Text>
-                  </View>
-                </View>
+                <MangaItem data={data} />
               )}
             />
           </View>
@@ -99,7 +96,7 @@ export default class MangaNotifier extends Component {
 const styles = StyleSheet.create({
   startup: {
     flex: 1,
-    justifyContent: "space-around", 
+    justifyContent: "center", 
     alignItems: "center"
   },
 
@@ -121,43 +118,9 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
 
-  lineitems_container: {
+  mangaitems_container: {
     marginLeft: 10,
     backgroundColor: "transparent",
-  },
-
-  lineitem: {
-    flex: 1,
-    padding: 10,
-    marginBottom: 20,
-    flexDirection: "row",
-  },
-
-  lineitem_image: {
-    height: 50,
-    width: 50,
-    padding: 10,
-  },
-
-  lineitem_data: {
-    paddingLeft: 10,
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-  },
-
-  lineitem_title: {
-    fontWeight: "600",
-    color: "#fff",
-    fontSize: 14,
-    flexWrap: "wrap"
-  },
-
-  lineitem_info: {
-    paddingTop: 5,
-    fontSize: 10,
-    color: "#fff",
   }
 });
 
